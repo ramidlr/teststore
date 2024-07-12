@@ -1,0 +1,98 @@
+{{ 'section.custom-slide.css' | asset_url | stylesheet_tag }}
+<!-- Slider main container -->
+<div class="swiper">
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    <!-- Slides -->
+
+    {% for block in section.blocks %}
+      <div class="swiper-slide">
+        <article class="slide-content">
+          <h2>{{ block.settings.slide_text }}</h2>
+          <a href=" {{ block.settings.link_url }}"> {{ block.settings.link_text }}</a>
+        </article>
+        <img src="{{ block.settings.slide_image | image_url }}" alt="slide-image">
+      </div>
+    {% endfor %}
+  </div>
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
+
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+  {% comment %}
+    <!-- If we need scrollbar -->
+    <div class="swiper-scrollbar"></div>
+  {% endcomment %}
+</div>
+
+<script>
+  const swiper = new Swiper('.swiper', {
+    // Optional parameters
+    direction: 'horizontal',
+    loop: true,
+
+    // If we need pagination
+    {% comment %} pagination: {
+      el: '.swiper-pagination',
+    }, {% endcomment %}
+
+    // Navigation arrows
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+
+    // And if we need scrollbar
+    scrollbar: {
+      el: '.swiper-scrollbar',
+    },
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom slider - Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Esto es el label",
+      "default": "Esto es texto por defecto",
+      "info": "Info sobre este setting",
+      "placeholder": "Esto es el placeholder"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "slide_text",
+          "label": "Titulo para el slide"
+        },
+        {
+          "type": "image_picker",
+          "id": "slide_image",
+          "label": "Selecciona tu imagen"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Ver mas"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "url"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
